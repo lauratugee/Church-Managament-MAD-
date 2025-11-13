@@ -57,6 +57,11 @@ class AuthViewModel: ViewModel() {
         }
     }
 
+    fun logout(){
+        _loginState.value=DataState.Idle
+        _registrationState.value=DataState.Idle
+    }
+
 
     private fun handleLoginResponse(response: Response<User>) {
         if (response.isSuccessful && response.body() != null) {
