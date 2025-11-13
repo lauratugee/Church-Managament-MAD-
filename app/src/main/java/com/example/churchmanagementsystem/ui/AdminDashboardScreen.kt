@@ -18,7 +18,7 @@ fun AdminDashboardScreen(navController: NavController){
             .padding(16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ) }
+    ) {
         Text("Admin Dashboard", style = MaterialTheme.typography.headlineLarge)
         Spacer(modifier = Modifier.height(32.dp))
 
@@ -39,13 +39,15 @@ fun AdminDashboardScreen(navController: NavController){
                 popUpTo("admin_dashboard") {
                     inclusive = true
                 }
-            }) {
-                Text("Logout")
             }
+            }){
+            Text("Logout")
+        }
         }
 
+
 @Composable
-fun AdminNavButton(text: String, onClick: () -> Unit){
+fun AdminNavButton(text: String, onClick: () -> Unit) {
     Button(
         onClick = onClick,
         modifier = Modifier
@@ -54,5 +56,6 @@ fun AdminNavButton(text: String, onClick: () -> Unit){
     ) {
         Text(text)
     }
+}
 }
 
