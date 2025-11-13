@@ -31,7 +31,8 @@ class AuthViewModel: ViewModel() {
         viewModelScope.launch {
             _loginState.value = AuthViewModel.DataState.Loading
             try {
-                val response = authRepository.login (email, password)
+                val userCredentials = mapOf("email" to email, "password" to password)
+                val response = authRepository.login (userCredentials )
 
                 if (response.isSuccessful && response.body() != null) {
                     _loginState.value = AuthViewModel.DataState.Success(response.body()!!)
