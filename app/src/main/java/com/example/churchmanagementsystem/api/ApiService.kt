@@ -15,6 +15,6 @@ interface ApiService {
     @GET("users")
     suspend fun getAllUsers():Response<List<User>>
     @GET("users/{id}")
-    suspend fun getUsersById(@Path ("id") userId: Int):Response<User>
+    suspend fun getUserById(@Path ("id") userId: Int):Response<User>
 
 }
