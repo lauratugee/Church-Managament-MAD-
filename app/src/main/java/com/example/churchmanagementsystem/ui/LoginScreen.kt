@@ -32,6 +32,24 @@ fun LoginScreen(
             val userEmail=(loginState as AuthViewModel.DataState.Success).data.email
             onLoginSuccess(userEmail)
         }
+        is AuthViewModel.DataState.Success -> {
+            val user= (loginState as AuthViewModel.DataState.Success).data
+
+        LaunchedEffect(key1=user){
+            val destination = if(user.role.equals("admin", ignoreCase = true)){
+                "admin_dashboard"
+            }else{
+                "home"
+            }
+            navController.navigate(destination){
+                popUpTo("login"){
+                    inclusive=true
+                }
+            }
+        }
+
+
+    }
 
     }
 

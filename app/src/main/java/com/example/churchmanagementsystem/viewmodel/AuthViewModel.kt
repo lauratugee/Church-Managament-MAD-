@@ -27,6 +27,8 @@ class AuthViewModel: ViewModel() {
     val registrationState = _registrationState.asStateFlow()
 
 
+
+
     fun login(email: String, password: String) {
         viewModelScope.launch {
             _loginState.value = AuthViewModel.DataState.Loading

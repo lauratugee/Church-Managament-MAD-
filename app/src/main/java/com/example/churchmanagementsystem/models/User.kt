@@ -20,7 +20,9 @@ data class User (
     val createdAt: String? = null
 ) :Parcelable
 
-fun User.getFullName():String{
-    return "$firstName $lastName"
+       fun User.getFullName():String{
+           return "$firstName $lastName"
+       }
 
-}
+
+
