@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.churchmanagementsystem.ui.HomeScreen
 import com.example.churchmanagementsystem.ui.LoginScreen
 import com.example.churchmanagementsystem.ui.RegistrationScreen
+import com.example.churchmanagementsystem.ui.AdminDashboardScreen
 import com.example.churchmanagementsystem.ui.theme.ChurchManagementSystemTheme
 import com.example.churchmanagementsystem.viewmodel.AuthViewModel
 class MainActivity : ComponentActivity() {
@@ -38,13 +39,10 @@ fun AppNavigation () {
     NavHost(navController = navController, startDestination = "login") {
         composable("login") {
             LoginScreen(
+                navController = navController,
                 onNavigateToRegister = {
                     navController.navigate("register")
-                },
-                onLoginSuccess = { userEmail ->
-                        navController.navigate("home/$userEmail") {
-                            popUpTo("login") { inclusive = true }
-                        }
+
                 }
             )
         }
@@ -69,7 +67,21 @@ fun AppNavigation () {
                 }
             )
         }
+        composable("admin_dashboard") {
+            AdminDashboardScreen(navController)
+        }
+        composable("create_group") {
+            CreateGroupScreen(navController)
+        }
+        composable("update_mass_schedule") {
+            UpdateMassScheduleScreen(navController)
+        }
+        composable("approve_members") {
+            ApproveMembersScreen(navController)
+        }
     }
-}
+        }
+    }
+
 
 
