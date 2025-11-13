@@ -18,7 +18,7 @@ import com.example.churchmanagementsystem.viewmodel.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegistrationScreen(onNavigationToLogin: () -> Unit) {
+fun RegistrationScreen(onNavigateToLogin: () -> Unit) {
     val authViewModel: AuthViewModel=viewModel()
 
     var firstName by remember{mutableStateOf("")}
@@ -45,8 +45,8 @@ fun RegistrationScreen(onNavigationToLogin: () -> Unit) {
         Column(
             modifier=Modifier
                 .fillMaxSize()
-                .padding(16.dp),
-
+                .padding(16.dp)
+                .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
         ){
             Text("Membership Registration Form", style=MaterialTheme.typography.headlineMedium)
@@ -60,11 +60,11 @@ fun RegistrationScreen(onNavigationToLogin: () -> Unit) {
             Spacer(modifier=Modifier.height(8.dp))
             OutlinedTextField(value=email, onValueChange = {email=it}, label= {Text("Email")}, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email), modifier=Modifier.fillMaxWidth())
             Spacer(modifier=Modifier.height(8.dp))
-            OutlinedTextField(value=dateOfBirth, onValueChange = {dateOfBirth=it}, label= {Text("Date of Birth(DD-MM-YYYY")}, modifier=Modifier.fillMaxWidth())
+            OutlinedTextField(value=dateOfBirth, onValueChange = {dateOfBirth=it}, label= {Text("Date of Birth(DD-MM-YYYY)")}, modifier=Modifier.fillMaxWidth())
             Spacer(modifier=Modifier.height(8.dp))
             OutlinedTextField(value=phoneNumber, onValueChange = {phoneNumber=it}, label= {Text("Phone Number")}, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone), modifier=Modifier.fillMaxWidth())
             Spacer(modifier=Modifier.height(8.dp))
-            OutlinedTextField(value=dateJoined, onValueChange = {dateJoined=it}, label= {Text ("Date Joined(DD-MM-YYYY")}, modifier=Modifier.fillMaxWidth())
+            OutlinedTextField(value=dateJoined, onValueChange = {dateJoined=it}, label= {Text ("Date Joined(DD-MM-YYYY)")}, modifier=Modifier.fillMaxWidth())
             Spacer(modifier=Modifier.height(8.dp))
 
             ExposedDropdownMenuBox(expanded = isGenderMenuExpanded, onExpandedChange = { isGenderMenuExpanded= !isGenderMenuExpanded}){
@@ -166,7 +166,8 @@ fun RegistrationScreen(onNavigationToLogin: () -> Unit) {
 
             }
             Spacer(modifier=Modifier.height(16.dp))
-            TextButton(onClick = onNavigationToLogin) {
+
+            TextButton(onClick = onNavigateToLogin) {
                 Text("Already have an account? Login")
             }
 
