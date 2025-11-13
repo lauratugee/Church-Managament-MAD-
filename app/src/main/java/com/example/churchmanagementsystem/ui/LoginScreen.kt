@@ -35,6 +35,12 @@ fun LoginScreen(
             } else {
                 "home/${user.email}"
             }
+            val destination = when{
+                user.role.equals("admin", ignoreCase = true) -> "admin_dashboard"
+                user.role.equals("treasurer", ignoreCase = true) -> "treasurer_dashboard")
+                else -> "home/${user.email}"
+
+            }
             navController.navigate(destination) {
                 popUpTo("login") {
                     inclusive = true
