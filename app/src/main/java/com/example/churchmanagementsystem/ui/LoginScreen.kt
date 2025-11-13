@@ -13,8 +13,9 @@ import com.example.churchmanagementsystem.viewmodel.AuthViewModel
 @Composable
 fun LoginScreen() {
     val authViewModel: AuthViewModel = viewModel()
-    val email by remember { mutableStateOf("") }
-    val password by remember { mutableStateOf("") }
+
+    var email by remember {mutableStateOf("") }
+    var password by remember {mutableStateOf("") }
 
     val loginState by authViewModel.loginState.collectAsState()
 
@@ -54,7 +55,7 @@ fun LoginScreen() {
                 onClick = {
                     authViewModel.login(email, password)
                 },
-                modifier = Modifier . fillMaxWidth (),
+                modifier = Modifier.fillMaxWidth (),
                 enabled = loginState !is AuthViewModel.DataState.Loading)
             {
                 Text("Login")
@@ -68,7 +69,7 @@ fun LoginScreen() {
 
                 is AuthViewModel.DataState.Success -> {
                     Text(
-                        "Login successful ${state.data.name}",
+                        "Login successful: ${state.data.email}",
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
