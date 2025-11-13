@@ -20,26 +20,18 @@ fun LoginScreen(
 ) {
 
     val authViewModel: AuthViewModel = viewModel()
-
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-
     val loginState by authViewModel.loginState.collectAsState()
 
     LaunchedEffect(loginState) {
         if (loginState is AuthViewModel.DataState.Success) {
             val user = (loginState as AuthViewModel.DataState.Success).data
 
-            val destination = if (user.role.equals("admin", ignoreCase = true)) {
-                "admin_dashboard"
-            } else {
-                "home/${user.email}"
-            }
-            val destination = when{
+            val destination = when {
                 user.role.equals("admin", ignoreCase = true) -> "admin_dashboard"
-                user.role.equals("treasurer", ignoreCase = true) -> "treasurer_dashboard")
+                user.role.equals("treasurer", ignoreCase = true) -> "treasurer_dashboard"
                 else -> "home/${user.email}"
-
             }
             navController.navigate(destination) {
                 popUpTo("login") {
@@ -47,17 +39,18 @@ fun LoginScreen(
                 }
             }
         }
-        Surface(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text("Login", style = MaterialTheme.typography.headlineMedium)
-                Spacer(modifier = Modifier.height(32.dp))
-            }
+    }
+    Surface(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+
+        ) {
+            Text("Login", style = MaterialTheme.typography.headlineMedium)
+            Spacer(modifier = Modifier.height(32.dp))
 
 
             //Email
