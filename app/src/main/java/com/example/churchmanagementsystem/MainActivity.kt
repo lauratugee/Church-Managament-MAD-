@@ -41,12 +41,10 @@ fun AppNavigation () {
                 onNavigateToRegister = {
                     navController.navigate("register")
                 },
-                onLoginSuccess = { userEmail-- >
+                onLoginSuccess = { userEmail ->
                         navController.navigate("home/$userEmail") {
                             popUpTo("login") { inclusive = true }
                         }
-
-
                 }
             )
         }
@@ -58,7 +56,7 @@ fun AppNavigation () {
             )
         }
         composable("home/{userEmail}") {
-            backStackEntry-- >
+            backStackEntry ->
             val email = backStackEntry.arguments?.getString("userEmail") ?: "No email found"
 
             HomeScreen(
