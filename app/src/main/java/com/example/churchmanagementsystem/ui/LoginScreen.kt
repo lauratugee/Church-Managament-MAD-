@@ -13,13 +13,26 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.churchmanagementsystem.viewmodel.AuthViewModel
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    onNavigateToRegister: () -> Unit,
+    onLoginSuccess: (String) -> Unit
+){
+
     val authViewModel: AuthViewModel = viewModel()
 
     var email by remember {mutableStateOf("") }
     var password by remember {mutableStateOf("") }
 
     val loginState by authViewModel.loginState.collectAsState()
+
+    LaunchedEffect(loginState){
+        if (loginState is AuthViewModel.DataState.Success){
+
+            val userEmail=(loginState as AuthViewModel.DataState.Success).data.email
+            onLoginSuccess(userEmail)
+        }
+
+    }
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -28,8 +41,7 @@ fun LoginScreen() {
                 .padding(16.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
-        )
-        {
+        ) {
             Text("Login", style = MaterialTheme.typography.headlineMedium)
             Spacer(modifier = Modifier.height(32.dp))
 
@@ -38,6 +50,7 @@ fun LoginScreen() {
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("Email") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -57,8 +70,9 @@ fun LoginScreen() {
                 onClick = {
                     authViewModel.login(email, password)
                 },
-                modifier = Modifier.fillMaxWidth (),
-                enabled = loginState !is AuthViewModel.DataState.Loading)
+                modifier = Modifier.fillMaxWidth(),
+                enabled = loginState !is AuthViewModel.DataState.Loading && email.isNotEmpty() && password.isNotEmpty()
+            )
             {
                 Text("Login")
             }
@@ -69,25 +83,20 @@ fun LoginScreen() {
                     CircularProgressIndicator()
                 }
 
-                is AuthViewModel.DataState.Success -> {
-                    Text(
-                        "Login successful: ${state.data.email}",
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
-
                 is AuthViewModel.DataState.Error -> {
                     Text("Login failed: ${state.message}", color = MaterialTheme.colorScheme.error)
                 }
 
-                is AuthViewModel.DataState.Idle -> {
+                else -> {}
+            }
+            Spacer(modifier = Modifier.height(16.dp))
 
-                }
+            TextButton(onClick = onNavigateToRegister) {
+                Text("Don't have an account? Register here")
+
 
             }
 
-
         }
-
     }
 }
