@@ -5,80 +5,78 @@ import androidx.lifecycle.viewModelScope
 import com.example.churchmanagementsystem.models.User
 import com.example.churchmanagementsystem.repository.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 class AuthViewModel: ViewModel() {
-    private val authRepository = AuthRepository()
-
-    sealed interface DataState<out T> {
-         data class Success<T>(val data: T) : DataState<T>
-        data class Error(val message: String) : DataState<Nothing>
-        object Loading : DataState<Nothing>
-        object Idle : DataState<Nothing>
+    sealed class DataState<out T> {
+        data class Success<T>(val data: T) : DataState<T>()
+        data class Error(val message: String) : DataState<Nothing>()
+        object Loading : DataState<Nothing>()
+        object Idle : DataState<Nothing>()
     }
 
-    private val _loginState = MutableStateFlow<DataState<User>>(DataState.Idle)
-    val loginState: StateFlow<DataState<User>> = _loginState
+    private val authRepository = AuthRepository()
 
-    private val _registrationState = MutableStateFlow<DataState<User>>(DataState.Idle)
+    private val _loginState = MutableStateFlow<DataState<User>>(AuthViewModel.DataState.Idle)
+    val loginState= _loginState.asStateFlow()
 
-    val registrationState: StateFlow<DataState<User>> = _registrationState
+
+    private val _registrationState = MutableStateFlow<DataState<User>>(AuthViewModel.DataState.Idle)
+
+    val registrationState = _registrationState.asStateFlow()
 
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
-            _loginState.value = DataState.Loading
+            _loginState.value = AuthViewModel.DataState.Loading
             try {
-                val credentials = mapOf("email" to email, "password" to password)
-                val response = authRepository.loginUser(credentials)
-                handleLoginResponse(response)
+                val response = authRepository.login (email, password)
+
+                if (response.isSuccessful && response.body() != null) {
+                    _loginState.value = AuthViewModel.DataState.Success(response.body()!!)
+                } else {
+                    val errorMessage = response.errorBody()?.string() ?: "Login failed:"
+                    _loginState.value =AuthViewModel.DataState.Error(errorMessage)
+                }
             } catch (e: Exception) {
-                _loginState.value = DataState.Error("Network error: ${e.message}")
+                _loginState.value = AuthViewModel.DataState.Error("Login failed: ${e.message}")
+
 
             }
         }
     }
 
-    fun register(user:User, password: String) {
+    fun register(user: User, password: String) {
         viewModelScope.launch {
-            _registrationState.value = DataState.Loading
+            _registrationState.value = AuthViewModel.DataState.Loading
 
             try {
 
-                val response=authRepository.registerUser(user, password)
-                handleRegistrationResponse(response)
+                val response = authRepository.register(user, password)
+
+                if (response.isSuccessful && response.body() != null) {
+                    _registrationState.value = AuthViewModel.DataState.Success(response.body()!!)
+
+                } else {
+                    val errorMessage = response.errorBody()?.string() ?: "Registration failed:"
+                    _registrationState.value = AuthViewModel.DataState.Error(errorMessage)
+
+                }
 
 
             } catch (e: Exception) {
-                _registrationState.value = DataState.Error("Registration failed: ${e.message}")
+                _registrationState.value = AuthViewModel.DataState.Error("Registration failed: ${e.message}")
             }
         }
     }
 
-    fun logout(){
-        _loginState.value=DataState.Idle
-        _registrationState.value=DataState.Idle
+    fun logout() {
+        _loginState.value = AuthViewModel.DataState.Idle
+        _registrationState.value = AuthViewModel.DataState.Idle
     }
 
 
-    private fun handleLoginResponse(response: Response<User>) {
-        if (response.isSuccessful && response.body() != null) {
-            _loginState.value = DataState.Success(response.body()!!)
-        } else {
-            val errorMessage = "Login failed: ${response.message()} (Code: ${response.code()})"
-            _loginState.value = DataState.Error(errorMessage)
-        }
-    }
-    private fun handleRegistrationResponse(response: Response<User>){
-        if (response.isSuccessful && response.body() != null) {
-            _registrationState.value = DataState.Success(response.body()!!)
-        } else {
-            val errorMessage = "Registration failed: ${response.message()} (Code: ${response.code()})"
-            _registrationState.value = DataState.Error(errorMessage)
-        }
-    }
 }
 
 
