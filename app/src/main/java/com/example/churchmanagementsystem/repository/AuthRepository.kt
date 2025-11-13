@@ -13,7 +13,7 @@ class AuthRepository {
         return RetrofitInstance.apiService.registerUser(user)
     }
 
-    suspend fun getUserbyId(userId: Int): Response<User> {
+    suspend fun getUserById(userId: Int): Response<User> {
         return RetrofitInstance.apiService.getUsersById(userId)
     }
 
