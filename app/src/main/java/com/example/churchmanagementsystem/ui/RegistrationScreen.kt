@@ -18,7 +18,7 @@ import com.example.churchmanagementsystem.viewmodel.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegistrationScreen() {
+fun RegistrationScreen(onNavigationToLogin: () -> Unit) {
     val authViewModel: AuthViewModel=viewModel()
 
     var firstName by remember{mutableStateOf("")}
@@ -46,8 +46,8 @@ fun RegistrationScreen() {
             modifier=Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+
+        horizontalAlignment = Alignment.CenterHorizontally
         ){
             Text("Membership Registration Form", style=MaterialTheme.typography.headlineMedium)
             Text("Fill in all the fields")
@@ -68,8 +68,16 @@ fun RegistrationScreen() {
             Spacer(modifier=Modifier.height(8.dp))
 
             ExposedDropdownMenuBox(expanded = isGenderMenuExpanded, onExpandedChange = { isGenderMenuExpanded= !isGenderMenuExpanded}){
-                OutlinedTextField(value=gender, onValueChange = {}, readOnly = true, label= {Text("Gender")},trailingIcon={ExposedDropdownMenuDefaults.TrailingIcon(expanded = isGenderMenuExpanded)}, modifier=Modifier.fillMaxWidth())
-                ExposedDropdownMenu(expanded = isGenderMenuExpanded, onDismissRequest = {isGenderMenuExpanded=false}) {
+                OutlinedTextField(
+                    value=gender,
+                    onValueChange = {}, readOnly = true,
+                    label= {Text("Gender")},
+                    trailingIcon={ExposedDropdownMenuDefaults.TrailingIcon(expanded = isGenderMenuExpanded)},
+                    modifier=Modifier.menuAnchor().fillMaxWidth()
+                )
+                ExposedDropdownMenu(
+                    expanded = isGenderMenuExpanded,
+                    onDismissRequest = {isGenderMenuExpanded=false}) {
                     genderOptions.forEach { option ->
                         DropdownMenuItem(text = { Text(option) }, onClick = {
                             gender = option
@@ -81,8 +89,18 @@ fun RegistrationScreen() {
             Spacer(modifier=Modifier.height(8.dp))
 
             ExposedDropdownMenuBox(expanded = isMaritalStatusMenuExpanded, onExpandedChange = { isMaritalStatusMenuExpanded= !isMaritalStatusMenuExpanded}){
-                OutlinedTextField(value=maritalStatus, onValueChange = {}, readOnly = true, label= {Text("Marital Status")},trailingIcon={ExposedDropdownMenuDefaults.TrailingIcon(expanded = isMaritalStatusMenuExpanded)}, modifier=Modifier.fillMaxWidth())
-                ExposedDropdownMenu(expanded = isMaritalStatusMenuExpanded, onDismissRequest = {isMaritalStatusMenuExpanded=false}){
+                OutlinedTextField(
+                    value=maritalStatus,
+                    onValueChange = {},
+                    readOnly = true,
+                    label= { Text("Marital Status")},
+                    trailingIcon={ExposedDropdownMenuDefaults.TrailingIcon(expanded = isMaritalStatusMenuExpanded)},
+                    modifier=Modifier.menuAnchor().fillMaxWidth()
+                )
+                ExposedDropdownMenu(
+                    expanded = isMaritalStatusMenuExpanded,
+                    onDismissRequest = {isMaritalStatusMenuExpanded=false}
+                ){
                     maritalStatusOptions.forEach { option ->
                         DropdownMenuItem(text = { Text(option) }, onClick = {
                             maritalStatus = option
@@ -124,25 +142,32 @@ fun RegistrationScreen() {
             }
             Spacer(modifier=Modifier.height(16.dp))
 
-            when(val state=registrationState){
-                is AuthViewModel.DataState.Loading->{
+            when(val state=registrationState) {
+                is AuthViewModel.DataState.Loading -> {
                     CircularProgressIndicator()
                 }
-                is AuthViewModel.DataState.Success->{
+
+                is AuthViewModel.DataState.Success -> {
                     Text(
                         "Registration successful: ${state.data.email}",
-                        color=MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
+
                 is AuthViewModel.DataState.Error -> {
                     Text(
                         "Registration failed: ${state.message}",
                         color = MaterialTheme.colorScheme.error
                     )
                 }
-                is AuthViewModel.DataState.Idle -> {
 
+                is AuthViewModel.DataState.Idle -> {
                 }
+
+            }
+            Spacer(modifier=Modifier.height(16.dp))
+            TextButton(onClick = onNavigationToLogin) {
+                Text("Already have an account? Login")
             }
 
 
@@ -150,6 +175,5 @@ fun RegistrationScreen() {
 
         }
 
-
-}
+        }
 }
