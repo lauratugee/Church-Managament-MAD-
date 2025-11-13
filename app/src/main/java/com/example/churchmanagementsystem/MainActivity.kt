@@ -3,24 +3,26 @@ package com.example.churchmanagementsystem
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.churchmanagementsystem.ui.HomeScreen
+import com.example.churchmanagementsystem.ui.LoginScreen
+import com.example.churchmanagementsystem.ui.RegistrationScreen
 import com.example.churchmanagementsystem.ui.theme.ChurchManagementSystemTheme
-
+import com.example.churchmanagementsystem.viewmodel.AuthViewModel
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             ChurchManagementSystemTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    RegistrationScreen()
+                    AppNavigation()
 
                 }
             }
@@ -29,17 +31,47 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun AppNavigation () {
+    val navController = rememberNavController()
+    val authViewModel: AuthViewModel = viewModel()
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ChurchManagementSystemTheme {
-        Greeting("Android")
+    NavHost(navController = navController, startDestination = "login") {
+        composable("login") {
+            LoginScreen(
+                onNavigateToRegister = {
+                    navController.navigate("register")
+                },
+                onLoginSuccess = { userEmail-- >
+                        navController.navigate("home/$userEmail") {
+                            popUpTo("login") { inclusive = true }
+                        }
+
+
+                }
+            )
+        }
+        composable("register") {
+            RegistrationScreen(
+                onNavigateToLogin = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable("home/{userEmail}") {
+            backStackEntry-- >
+            val email = backStackEntry.arguments?.getString("userEmail") ?: "No email found"
+
+            HomeScreen(
+                userEmail = email,
+                onLogout = {
+                    authViewModel.logout()
+                    navController.navigate("login") {
+                        popUpTo("home/$email") { inclusive = true }
+                    }
+                }
+            )
+        }
     }
 }
+
+
