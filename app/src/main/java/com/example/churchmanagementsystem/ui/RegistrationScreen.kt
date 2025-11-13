@@ -73,7 +73,7 @@ fun RegistrationScreen(onNavigateToLogin: () -> Unit) {
                     onValueChange = {}, readOnly = true,
                     label= {Text("Gender")},
                     trailingIcon={ExposedDropdownMenuDefaults.TrailingIcon(expanded = isGenderMenuExpanded)},
-                    modifier=Modifier.menuAnchor().fillMaxWidth()
+                    modifier=Modifier.fillMaxWidth()
                 )
                 ExposedDropdownMenu(
                     expanded = isGenderMenuExpanded,
@@ -95,7 +95,7 @@ fun RegistrationScreen(onNavigateToLogin: () -> Unit) {
                     readOnly = true,
                     label= { Text("Marital Status")},
                     trailingIcon={ExposedDropdownMenuDefaults.TrailingIcon(expanded = isMaritalStatusMenuExpanded)},
-                    modifier=Modifier.menuAnchor().fillMaxWidth()
+                    modifier=Modifier.fillMaxWidth()
                 )
                 ExposedDropdownMenu(
                     expanded = isMaritalStatusMenuExpanded,
@@ -171,10 +171,7 @@ fun RegistrationScreen(onNavigateToLogin: () -> Unit) {
                 Text("Already have an account? Login")
             }
 
-
-
-
         }
 
-        }
+    }
 }
