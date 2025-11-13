@@ -1,24 +1,45 @@
 package com.example.churchmanagementsystem.ui
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import  androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.churchmanagementsystem.models.User
 import com.example.churchmanagementsystem.viewmodel.AuthViewModel
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegistrationScreen() {
     val authViewModel: AuthViewModel=viewModel()
 
+    var firstName by remember{mutableStateOf("")}
+    var lastName by remember{mutableStateOf("")}
     var email by remember{mutableStateOf("")}
+    var dateOfBirth by remember{mutableStateOf("")}
+    var phoneNumber by remember{mutableStateOf("")}
+    var dateJoined by remember{mutableStateOf("")}
+    var gender by remember{mutableStateOf("")}
+    var maritalStatus by remember{mutableStateOf("")}
     var password by remember{mutableStateOf("")}
     var confirmPassword by remember{mutableStateOf("")}
 
+    val genderOptions=listOf("Male", "Female", "Other")
+    val maritalStatusOptions=listOf("Single", "Married", "Prefer not to say")
+    var isGenderMenuExpanded by remember{mutableStateOf(false)}
+    var isMaritalStatusMenuExpanded by remember{mutableStateOf(false)}
+
     val registrationState by authViewModel.registrationState.collectAsState()
+    val scrollState = rememberScrollState()
+
 
     Surface(modifier=Modifier.fillMaxSize()){
         Column(
@@ -28,47 +49,76 @@ fun RegistrationScreen() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            Text("Create account", style=MaterialTheme.typography.headlineMedium)
-            Spacer(modifier=Modifier.height(32.dp))
+            Text("Membership Registration Form", style=MaterialTheme.typography.headlineMedium)
+            Text("Fill in all the fields")
+            Spacer(modifier=Modifier.height(24.dp))
 
             //Email
-            OutlinedTextField(
-                value=email,
-                onValueChange = {email=it},
-                label= {Text("Email")},
-                modifier=Modifier.fillMaxWidth()
-            )
+            OutlinedTextField(value=firstName, onValueChange = {firstName=it}, label= {Text("First Name")}, modifier=Modifier.fillMaxWidth())
+            Spacer(modifier=Modifier.height(8.dp))
+            OutlinedTextField(value=lastName, onValueChange = {lastName=it}, label= {Text("Last Name")}, modifier=Modifier.fillMaxWidth())
+            Spacer(modifier=Modifier.height(8.dp))
+            OutlinedTextField(value=email, onValueChange = {email=it}, label= {Text("Email")}, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email), modifier=Modifier.fillMaxWidth())
+            Spacer(modifier=Modifier.height(8.dp))
+            OutlinedTextField(value=dateOfBirth, onValueChange = {dateOfBirth=it}, label= {Text("Date of Birth(DD-MM-YYYY")}, modifier=Modifier.fillMaxWidth())
+            Spacer(modifier=Modifier.height(8.dp))
+            OutlinedTextField(value=phoneNumber, onValueChange = {phoneNumber=it}, label= {Text("Phone Number")}, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone), modifier=Modifier.fillMaxWidth())
+            Spacer(modifier=Modifier.height(8.dp))
+            OutlinedTextField(value=dateJoined, onValueChange = {dateJoined=it}, label= {Text ("Date Joined(DD-MM-YYYY")}, modifier=Modifier.fillMaxWidth())
             Spacer(modifier=Modifier.height(8.dp))
 
-            //Password
-            OutlinedTextField(
-                value=password,
-                onValueChange = {password=it},
-                label= {Text("Password")},
-                visualTransformation = PasswordVisualTransformation(),
-                modifier=Modifier.fillMaxWidth()
-            )
+            ExposedDropdownMenuBox(expanded = isGenderMenuExpanded, onExpandedChange = { isGenderMenuExpanded= !isGenderMenuExpanded}){
+                OutlinedTextField(value=gender, onValueChange = {}, readOnly = true, label= {Text("Gender")},trailingIcon={ExposedDropdownMenuDefaults.TrailingIcon(expanded = isGenderMenuExpanded)}, modifier=Modifier.fillMaxWidth())
+                ExposedDropdownMenu(expanded = isGenderMenuExpanded, onDismissRequest = {isGenderMenuExpanded=false}) {
+                    genderOptions.forEach { option ->
+                        DropdownMenuItem(text = { Text(option) }, onClick = {
+                            gender = option
+                            isGenderMenuExpanded = false
+                        })
+                    }
+                }
+            }
             Spacer(modifier=Modifier.height(8.dp))
 
-            //Confirm Password
-            OutlinedTextField(
-                value=confirmPassword,
-                onValueChange = {confirmPassword=it},
-                label= {Text("Confirm Password")},
-                visualTransformation = PasswordVisualTransformation(),
-                modifier=Modifier.fillMaxWidth(),
+            ExposedDropdownMenuBox(expanded = isMaritalStatusMenuExpanded, onExpandedChange = { isMaritalStatusMenuExpanded= !isMaritalStatusMenuExpanded}){
+                OutlinedTextField(value=maritalStatus, onValueChange = {}, readOnly = true, label= {Text("Marital Status")},trailingIcon={ExposedDropdownMenuDefaults.TrailingIcon(expanded = isMaritalStatusMenuExpanded)}, modifier=Modifier.fillMaxWidth())
+                ExposedDropdownMenu(expanded = isMaritalStatusMenuExpanded, onDismissRequest = {isMaritalStatusMenuExpanded=false}){
+                    maritalStatusOptions.forEach { option ->
+                        DropdownMenuItem(text = { Text(option) }, onClick = {
+                            maritalStatus = option
+                            isMaritalStatusMenuExpanded = false
+                        })
+                    }
+                }
+            }
+            Spacer(modifier=Modifier.height(8.dp))
 
-                isError =password.isNotEmpty() && confirmPassword.isNotEmpty() && password != confirmPassword
-            )
-            Spacer(modifier=Modifier.height(32.dp))
+            OutlinedTextField(value=password, onValueChange = {password=it}, label= {Text("Password")}, visualTransformation = PasswordVisualTransformation(), modifier=Modifier.fillMaxWidth())
+            Spacer(modifier=Modifier.height(8.dp))
+            OutlinedTextField(value=confirmPassword, onValueChange = {confirmPassword=it}, label= {Text("Confirm Password")}, visualTransformation = PasswordVisualTransformation(), modifier=Modifier.fillMaxWidth())
+            Spacer(modifier=Modifier.height(24.dp))
+
+
 
             //Register button
             Button(
                 onClick={
-                    authViewModel.register(email, password)
+                    val userToRegister=User(
+                        firstName=firstName,
+                        lastName=lastName,
+                        email=email,
+                        dateOfBirth=dateOfBirth,
+                        phoneNumber=phoneNumber,
+                        dateJoined=dateJoined,
+                        gender=gender,
+                        maritalStatus=maritalStatus
+                    )
+                    authViewModel.register(userToRegister, password)
                 },
                 modifier=Modifier.fillMaxWidth(),
-                enabled=registrationState !is AuthViewModel.DataState.Loading && email.isNotEmpty() && password.isNotEmpty() && password== confirmPassword
+                enabled=registrationState !is AuthViewModel.DataState.Loading &&
+                        firstName.isNotEmpty() && lastName.isNotEmpty() && email.isNotEmpty()
+                        && phoneNumber.isNotEmpty() && gender.isNotEmpty() && maritalStatus.isNotEmpty() && password.isNotEmpty() && password== confirmPassword
             ){
                 Text("Register")
             }

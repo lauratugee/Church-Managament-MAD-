@@ -9,8 +9,9 @@ class AuthRepository {
         return RetrofitInstance.api.loginUser(credentials)
     }
 
-    suspend fun registerUser(credentials: Map<String, String>): Response<User> {
-        return RetrofitInstance.api.registerUser(credentials)
+    suspend fun registerUser(user:User, password: String): Response<User> {
+        val request= RegistrationRequest(user, password)
+        return RetrofitInstance.api.registerUser(request)
     }
 
     suspend fun getUserById(userId: Int): Response<User> {

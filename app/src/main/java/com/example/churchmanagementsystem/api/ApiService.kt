@@ -1,5 +1,6 @@
 package com.example.churchmanagementsystem.api
 
+import com.example.churchmanagementsystem.models.RegistrationRequest
 import com.example.churchmanagementsystem.models.User
 import retrofit2.Response
 import retrofit2.http.Body
@@ -11,7 +12,7 @@ interface ApiService {
     @POST("auth/login")
     suspend fun loginUser(@Body credentials: Map<String,String>): Response<User>
     @POST("auth/register")
-    suspend fun registerUser(@Body credentials:Map<String,String>):Response<User>
+    suspend fun registerUser(@Body registrationRequest: RegistrationRequest):Response<User>
     @GET("users")
     suspend fun getAllUsers():Response<List<User>>
     @GET("users/{id}")

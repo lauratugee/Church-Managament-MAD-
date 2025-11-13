@@ -41,13 +41,13 @@ class AuthViewModel: ViewModel() {
         }
     }
 
-    fun register(email: String, password: String) {
+    fun register(user:User, password: String) {
         viewModelScope.launch {
             _registrationState.value = DataState.Loading
 
             try {
-                val credentials = mapOf("email" to email, "password" to password)
-                val response=authRepository.registerUser(credentials)
+
+                val response=authRepository.registerUser(user, password)
                 handleRegistrationResponse(response)
 
 
