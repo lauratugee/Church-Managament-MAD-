@@ -6,22 +6,21 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class User (
-    val id: Int = 0,
-    val first_name: String = "",
-    val last_name: String = "",
-    val email: String = "",
-    val password: String = "",
-    val date_of_birth: String = "",
-    val phone_number: String = "",
-    val date_joined: String = "",
+    val id: Int? = null,
+    val firstName: String,
+    val lastName: String,
+    val email: String,
+    val dateOfBirth: String,
+    val phoneNumber: String,
+    val dateJoined: String,
     val gender: String = "",
-    val marital_status: String = "",
+    val maritalStatus: String = "",
     val role: String = "member",
     val isApproved: Boolean = false,
     val createdAt: String? = null
 ) :Parcelable
 
 fun User.getFullName():String{
-    return "$first_name $last_name"
+    return "$firstName $lastName"
 
 }
