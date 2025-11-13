@@ -20,29 +20,29 @@ fun HomeScreen(
     userEmail: String,
     onLogout: () -> Unit
 ){
-    Surface(modifier=Modifier.fillMaxSize()){
+    Surface(modifier=Modifier.fillMaxSize()) {
         Column(
-            modifier=Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
-        ){
-        Text("Welcome",
-            style=MaterialTheme.typography.headlineLarge
-        )
-        Spacer(modifier=Modifier.height(8.dp))
-        Text(
-            text= userEmail,
-            style=MaterialTheme.typography.bodyLarge
-        )
-        Spacer(modifier=Modifier.height(32.dp))
-        Button(onClick=onLogout){
-            Text("Logout")
+        ) {
+            Text(
+                "Welcome",
+                style = MaterialTheme.typography.headlineLarge
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = userEmail,
+                style = MaterialTheme.typography.bodyLarge
+            )
+            Spacer(modifier = Modifier.height(32.dp))
+            Button(onClick = onLogout) {
+                Text("Logout")
+            }
         }
-        }
-
-
-
-
     }
 
+
+
 }
+
