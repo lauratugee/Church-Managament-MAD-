@@ -97,7 +97,7 @@ fun LoginScreen(
                     authViewModel.login(email, password)
                 },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = isUIEnabled && email.isNotEmpty()
+                enabled = isUIEnabled && email.isNotEmpty() && password.isNotEmpty()
             )
             {
                 Text("Login")
