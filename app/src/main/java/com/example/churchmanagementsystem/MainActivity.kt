@@ -5,9 +5,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -34,24 +37,21 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppNavigation () {
     val navController = rememberNavController()
-    val authViewModel: AuthViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = "login") {
         composable("login") {
             LoginScreen(
                 navController = navController,
-                onNavigateToRegister = {
-                    navController.navigate("register")
-
-                }
+                onNavigateToRegister = { navController.navigate("register") }
             )
+
         }
         composable("register") {
             RegistrationScreen(
-                onNavigateToLogin = {
-                    navController.popBackStack()
-                }
+                navController = navController
             )
+
+
         }
         composable("home/{userEmail}") {
             backStackEntry ->
@@ -60,9 +60,8 @@ fun AppNavigation () {
             HomeScreen(
                 userEmail = email,
                 onLogout = {
-                    authViewModel.logout()
                     navController.navigate("login") {
-                        popUpTo("home/$email") { inclusive = true }
+                        popUpTo(navController.graph.startDestinationId) { inclusive = true }
                     }
                 }
             )
@@ -80,11 +79,42 @@ fun AppNavigation () {
             ApproveMembersScreen(navController)
         }
         composable ("treasurer_dashboard") {
-            TreasurerDashboardScreen(navController=navController)
-
-    }
+            TreasurerDashboardScreen(navController = navController)
         }
     }
+}
+
+@Composable
+fun CreateGroupScreen(navController: NavController) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Text("Create Group Screen")
+    }
+}
+
+@Composable
+fun UpdateMassScheduleScreen(navController: NavController) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+        Text("Update Mass Schedule Screen")
+    }
+}
+
+@Composable
+fun ApproveMembersScreen(navController: NavController) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Text("Approve Members Screen")
+    }
+}
+
+@Composable
+fun TreasurerDashboardScreen(navController: NavController) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Text("Treasurer Dashboard Screen")
+    }
+}
+
+
+
+
 
 
 
