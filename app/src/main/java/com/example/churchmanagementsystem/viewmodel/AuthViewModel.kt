@@ -2,6 +2,7 @@ package com.example.churchmanagementsystem.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.churchmanagementsystem.api.RetrofitInstance
 import com.example.churchmanagementsystem.models.User
 import com.example.churchmanagementsystem.repository.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +17,7 @@ class AuthViewModel: ViewModel() {
         object Idle : DataState<Nothing>()
     }
 
-    private val authRepository = AuthRepository()
+    private val authRepository = AuthRepository(RetrofitInstance.api)
 
     private val _loginState = MutableStateFlow<DataState<User>>(AuthViewModel.DataState.Idle)
     val loginState= _loginState.asStateFlow()
@@ -32,45 +33,40 @@ class AuthViewModel: ViewModel() {
     fun login(email: String, password: String) {
         viewModelScope.launch {
             _loginState.value = AuthViewModel.DataState.Loading
-            try {
-                val userCredentials = mapOf("email" to email, "password" to password)
-                val response = authRepository.login (userCredentials )
 
-                if (response.isSuccessful && response.body() != null) {
-                    _loginState.value = AuthViewModel.DataState.Success(response.body()!!)
-                } else {
-                    val errorMessage = response.errorBody()?.string() ?: "Login failed:"
-                    _loginState.value =AuthViewModel.DataState.Error(errorMessage)
-                }
-            } catch (e: Exception) {
-                _loginState.value = AuthViewModel.DataState.Error("Login failed: ${e.message}")
-
+            val result = authRepository.login(email, password)
+            _loginState.value = result
 
             }
         }
-    }
 
-    fun register(user: User, password: String) {
+
+    fun register(
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: String,
+        phoneNumber: String,
+        dateJoined: String,
+        gender: String,
+        maritalStatus: String
+    ){
         viewModelScope.launch {
             _registrationState.value = AuthViewModel.DataState.Loading
 
-            try {
+            val result=authRepository.register(
+                firstName=firstName,
+                lastName=lastName,
+                email=email,
+                dateOfBirth=dateOfBirth,
+                phoneNumber=phoneNumber,
+                dateJoined=dateJoined,
+                gender=gender,
+                maritalStatus=maritalStatus
+            )
+            _registrationState.value=result
 
-                val response = authRepository.register(user, password)
 
-                if (response.isSuccessful && response.body() != null) {
-                    _registrationState.value = AuthViewModel.DataState.Success(response.body()!!)
-
-                } else {
-                    val errorMessage = response.errorBody()?.string() ?: "Registration failed:"
-                    _registrationState.value = AuthViewModel.DataState.Error(errorMessage)
-
-                }
-
-
-            } catch (e: Exception) {
-                _registrationState.value = AuthViewModel.DataState.Error("Registration failed: ${e.message}")
-            }
         }
     }
 

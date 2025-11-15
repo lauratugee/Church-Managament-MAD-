@@ -11,6 +11,9 @@ import java.util.Locale
 
 class AuthRepository(private val apiService: ApiService){
 
+    private typealias DataState<T> = AuthViewModel.DataState<T>
+
+
     suspend fun register(
         firstName: String,
         lastName: String,
@@ -42,7 +45,7 @@ class AuthRepository(private val apiService: ApiService){
 
             }
         } catch (e: Exception){
-            DataState.Error(message ?: "Unknown error")
+            DataState.Error(e.message ?: "Unknown error")
         }
     }
 
