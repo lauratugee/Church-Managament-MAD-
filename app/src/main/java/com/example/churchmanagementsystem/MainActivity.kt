@@ -79,6 +79,9 @@ fun AppNavigation () {
         composable("approve_members") {
             ApproveMembersScreen(navController)
         }
+        composable ("treasurer_dashboard") {
+            TreasurerDashboardScreen(navController=navController)
+
     }
         }
     }
