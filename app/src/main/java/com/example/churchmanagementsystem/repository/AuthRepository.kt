@@ -26,7 +26,7 @@ class AuthRepository(private val apiService: ApiService){
         }
     }
 
-    suspend fun register()
+
 
     suspend fun login(email: String, password: String): DataState<User> {
         return try {
