@@ -21,8 +21,8 @@ class GroupViewModel(private val groupRepository: GroupRepository) : ViewModel()
         if (groupName.isBlank()) return
 
         viewModelScope.launch {
-            val newGroup = Group(name = groupName)
-            groupRepository.insert(newGroup)
+            val newGroup = Group(name = groupName,description = groupDescription)
+            groupRepository.insertGroup(newGroup)
         }
 
     }

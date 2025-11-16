@@ -30,7 +30,7 @@ class TreasurerViewModel (private val treasurerRepository: TreasurerRepository):
                 massName = massName,
                 amount = amountDouble,
                 date = date,
-                notes = notes
+                notes = notes?: ""
             )
             val result=treasurerRepository.addTithe(newTithe)
             onResult(result.isSuccess)
@@ -56,7 +56,7 @@ class TreasurerViewModel (private val treasurerRepository: TreasurerRepository):
                 name = name,
                 amount = amountDouble,
                 date = date,
-                notes = notes
+                notes = notes?: ""
             )
             val result=treasurerRepository.addFundraiser(newFundraiser)
             onResult(result.isSuccess)
