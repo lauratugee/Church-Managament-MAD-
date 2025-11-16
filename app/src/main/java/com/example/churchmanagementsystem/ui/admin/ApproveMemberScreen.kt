@@ -10,12 +10,14 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.compose.material3.ExperimentalMaterial3Api
 import com.example.churchmanagementsystem.models.User
 import com.example.churchmanagementsystem.viewmodel.AdminViewModel
 import com.example.churchmanagementsystem.util.DataState
@@ -24,7 +26,7 @@ import com.example.churchmanagementsystem.repository.AdminRepository
 import com.example.churchmanagementsystem.viewmodel.AdminViewModelFactory
 
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ApproveMemberScreen(navController: NavController) {
     val apiService = RetrofitInstance.api
@@ -97,12 +99,16 @@ fun ApproveMemberScreen(navController: NavController) {
                                 .padding(16.dp),
                             verticalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
-                            items(pendingMembers, key = { it.id }) { member ->
-                                MemberApprovalCard(
-                                    member = member,
-                                    onApprove = { adminViewModel.approveMember(member.id) },
-                                    onDecline = { adminViewModel.declineMember(member.id) }
-                                )
+                            items(pendingMembers, key = { it.id ?: hashCode() }) { member ->
+                                member.id?.let { memberId ->
+                                    MemberApprovalCard(
+                                        member = member,
+                                        onApprove = { adminViewModel.approveMember(memberId) },
+                                        onDecline = { adminViewModel.declineMember(memberId) }
+                                    )
+                                }
+
+
                             }
                         }
                     }
@@ -124,6 +130,7 @@ fun ApproveMemberScreen(navController: NavController) {
         }
     }
 }
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MemberApprovalCard(
     member: User,

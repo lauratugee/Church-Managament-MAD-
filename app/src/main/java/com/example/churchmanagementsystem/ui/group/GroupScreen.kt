@@ -35,7 +35,7 @@ fun GroupScreen() {
     var groupName by remember { mutableStateOf("") }
 
     Column(modifier = Modifier.padding(16.dp)) {
-        Text("Group list",style=androidx.compose.material3.MaterialTheme.typography.bodyMedium)
+        Text(text="Group list",style=androidx.compose.material3.MaterialTheme.typography.bodyMedium)
 
         Row(
             modifier = Modifier
