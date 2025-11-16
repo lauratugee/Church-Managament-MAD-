@@ -20,6 +20,7 @@ import com.example.churchmanagementsystem.ui.LoginScreen
 import com.example.churchmanagementsystem.ui.RegistrationScreen
 import com.example.churchmanagementsystem.ui.AdminDashboardScreen
 import com.example.churchmanagementsystem.ui.group.GroupScreen
+import com.example.churchmanagementsystem.ui.mass_schedule.MassScheduleScreen
 import com.example.churchmanagementsystem.ui.theme.ChurchManagementSystemTheme
 import com.example.churchmanagementsystem.viewmodel.AuthViewModel
 class MainActivity : ComponentActivity() {
@@ -75,7 +76,7 @@ fun AppNavigation () {
             GroupScreen()
         }
         composable("update_mass_schedule") {
-            UpdateMassScheduleScreen(navController)
+            MassScheduleScreen()
         }
         composable("approve_members") {
             ApproveMembersScreen(navController)
