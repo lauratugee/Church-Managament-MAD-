@@ -43,6 +43,7 @@ fun AddMassScheduleScreen(navController: NavController) {
     ) { innerPadding ->
         var dayOfWeek by remember { mutableStateOf("") }
         var startTime by remember { mutableStateOf("") }
+        var endTime by remember { mutableStateOf("") }
         var language by remember { mutableStateOf("") }
 
 
@@ -67,6 +68,12 @@ fun AddMassScheduleScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(
+                value = endTime,
+                onValueChange = { endTime = it },
+                label = { Text("End time") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            OutlinedTextField(
                 value = language,
                 onValueChange = { language = it },
                 label = { Text("Language") },
@@ -80,18 +87,16 @@ fun AddMassScheduleScreen(navController: NavController) {
                         id=0,
                         dayOfWeek = dayOfWeek,
                         startTime = startTime,
+                        endTime = endTime,
                         language = language
                     )
 
-                    adminViewModel.addMassSchedule(newSchedule) { isSuccess ->
-                        if (isSuccess) {
-                            navController.navigateUp()
-                        } else {
+                    adminViewModel.addMassSchedule(newSchedule)
+                    navController.navigateUp()
 
-                        }
-                    }
+
+
                 },
-
                 modifier = Modifier.fillMaxWidth()
             ) {
 
