@@ -12,9 +12,10 @@ data class User (
     val email: String,
     val dateOfBirth: String,
     val phoneNumber: String,
-    val dateJoined: String,
+    val dateJoined: String="",
     val gender: String = "",
     val maritalStatus: String = "",
+    val password: String,
     val role: String = "member",
     val isApproved: Boolean = false,
     val createdAt: String? = null

@@ -9,6 +9,11 @@ import com.example.churchmanagementsystem.util.DataState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
+
 
 class AuthViewModel: ViewModel() {
 
@@ -41,6 +46,10 @@ class AuthViewModel: ViewModel() {
         viewModelScope.launch {
             _authState.value=DataState.Loading
 
+            val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+            val currentDate = sdf.format(Date())
+
+
             val user=User(
                 id=0,
                 firstName=firstName,
@@ -50,7 +59,8 @@ class AuthViewModel: ViewModel() {
                 phoneNumber=phoneNumber,
                 gender=gender,
                 maritalStatus=maritalStatus,
-                password=password
+                dateJoined = currentDate,
+                password = password
             )
             val result=authRepository.register(user)
             _authState.value=result
