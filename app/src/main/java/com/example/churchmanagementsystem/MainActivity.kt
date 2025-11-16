@@ -56,16 +56,16 @@ fun AppNavigation () {
         composable("register") {
             RegistrationScreen(
                 navController = navController,
-                onNavigateToLogin = { navController.navigate("login") {
-                    popUpTo(navController.graph.startDestinationId) { inclusive = true }
-                }
+                onNavigateToLogin = {
+                    navController.navigate("login") {
+                        popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                    }
                 }
             )
 
 
         }
-        composable("home/{userEmail}") {
-            backStackEntry ->
+        composable("home/{userEmail}") { backStackEntry ->
             val email = backStackEntry.arguments?.getString("userEmail") ?: "No email found"
 
             HomeScreen(
@@ -87,35 +87,17 @@ fun AppNavigation () {
             MassScheduleScreen()
         }
         composable("approve_members") {
-            ApproveMembersScreen(navController)
+            ApproveMemberScreen(navController)
         }
-        composable ("treasurer_dashboard") {
+        composable("treasurer_dashboard") {
             TreasurerDashboardScreen(navController = navController)
         }
     }
 }
 
 
-@Composable
-fun UpdateMassScheduleScreen(navController: NavController) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
-        Text("Update Mass Schedule Screen")
-    }
-}
 
-@Composable
-fun ApproveMembersScreen(navController: NavController) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text("Approve Members Screen")
-    }
-}
 
-@Composable
-fun TreasurerDashboardScreen(navController: NavController) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text("Treasurer Dashboard Screen")
-    }
-}
 
 
 

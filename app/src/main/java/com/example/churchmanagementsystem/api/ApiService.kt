@@ -43,7 +43,7 @@ interface ApiService {
     suspend fun addTithe(@Body tithe: Tithe): Response<Unit>
 
     @POST("fundraisers")
-    suspend fun addFundraiser(@Body fundraiser: Fundraiser): Response<Unit)
+    suspend fun addFundraiser(@Body fundraiser: Fundraiser): Response<Unit>
 
 
 }
