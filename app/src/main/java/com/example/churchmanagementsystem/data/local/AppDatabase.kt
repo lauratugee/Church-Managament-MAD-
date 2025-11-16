@@ -5,10 +5,24 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.churchmanagementsystem.models.Group
+import com.example.churchmanagementsystem.models.MassSchedule
 
-@Database(entities = [Group::class], version = 1,exportSchema=false)
+
+
+@Database(
+    entities = [
+        Group::class,
+        MassSchedule::class
+    ],
+    version = 2,
+    exportSchema = false
+)
+
+
 abstract class AppDatabase:RoomDatabase() {
     abstract fun groupDao(): GroupDao
+    abstract fun massScheduleDao(): MassScheduleDao
+
 
     companion object{
         @Volatile
