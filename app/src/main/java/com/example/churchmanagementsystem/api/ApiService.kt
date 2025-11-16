@@ -9,6 +9,8 @@ import retrofit2.http.DELETE
 import retrofit2.http.Path
 import com.example.churchmanagementsystem.models.MassSchedule
 import com.example.churchmanagementsystem.models.Tithe
+import com.example.churchmanagementsystem.models.Fundraiser
+
 
 
 
@@ -39,6 +41,9 @@ interface ApiService {
 
     @POST("tithes")
     suspend fun addTithe(@Body tithe: Tithe): Response<Unit>
+
+    @POST("fundraisers")
+    suspend fun addFundraiser(@Body fundraiser: Fundraiser): Response<Unit)
 
 
 }
