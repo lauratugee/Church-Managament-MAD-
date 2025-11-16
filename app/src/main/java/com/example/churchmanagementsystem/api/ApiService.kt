@@ -5,6 +5,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.http.GET
+import retrofit2.http.DELETE
 import retrofit2.http.Path
 import com.example.churchmanagementsystem.models.MassSchedule
 
@@ -27,6 +28,9 @@ interface ApiService {
 
     @GET("api/schedules")
     suspend fun getMassSchedules(): Response<List<MassSchedule>>
+
+    @DELETE("mass-schedules/{scheduleId}")
+    suspend fun deleteMassSchedule(@Path("scheduleId") scheduleId: Long): Response<Unit>
 
 
 }

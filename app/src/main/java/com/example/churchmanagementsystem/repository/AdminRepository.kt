@@ -58,6 +58,14 @@ class AdminRepository (private val apiService: ApiService){
 
 
         }
+    suspend fun deleteMassSchedule(scheduleId: Long): Result<Unit> {
+        return try {
+            apiService.deleteMassSchedule(scheduleId)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+
     }
 
 

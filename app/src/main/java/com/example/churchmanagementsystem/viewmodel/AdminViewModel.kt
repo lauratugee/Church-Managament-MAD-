@@ -2,6 +2,7 @@ package com.example.churchmanagementsystem.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.churchmanagementsystem.models.MassSchedule
 import com.example.churchmanagementsystem.models.User
 import com.example.churchmanagementsystem.repository.AdminRepository
 import com.example.churchmanagementsystem.util.DataState
@@ -52,6 +53,26 @@ class AdminViewModel (private val adminRepository: AdminRepository): ViewModel()
     fun resetApprovalState() {
         _approvalState.value = DataState.Idle
     }
+    fun getMassSchedules() {
+        viewModelScope.launch {
+            _massSchedules.value = DataState.Loading
+            _massSchedules.value = adminRepository.getMassSchedules()
+        }
+    }
+    fun deleteMassSchedule(scheduleId: Long) {
+        viewModelScope.launch {
+            val result = adminRepository.deleteMassSchedule(scheduleId)
+            if(result.isSuccess){
+                getMassSchedules()
+            } else{
+                println("Error deleting mass schedule: ${result.exceptionOrNull()?.message}")
+            }
+            }
+
+        }
+
+
+
 }
 
 
