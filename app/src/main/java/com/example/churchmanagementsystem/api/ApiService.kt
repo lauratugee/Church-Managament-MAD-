@@ -4,6 +4,9 @@ import com.example.churchmanagementsystem.models.User
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.http.GET
+import retrofit2.http.Path
+
 
 interface ApiService {
     @POST("register")
@@ -11,5 +14,15 @@ interface ApiService {
 
     @POST("login")
     suspend fun loginUser(@Body credentials: Map<String, String>): Response<User>
+
+    @GET("pending_members")
+    suspend fun getPendingMembers(): Response<List<User>>
+
+    @POST("approve_member/{userId}")
+    suspend fun approveMember(@Path("userId") userId: Int): Response<Unit>
+
+    @POST("decline_member/{userId}")
+    suspend fun declineMember(@Path("userId") userId: Int): Response<Unit>
+
 
 }
