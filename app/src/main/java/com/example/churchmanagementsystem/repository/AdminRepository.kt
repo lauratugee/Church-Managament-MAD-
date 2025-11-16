@@ -74,7 +74,7 @@ class AdminRepository (private val apiService: ApiService) {
 
     suspend fun addMassSchedule(massSchedule: MassSchedule): Result<Unit> {
         return try {
-            apiService.addMassSchedule(schedule)
+            apiService.addMassSchedule(massSchedule)
             Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
