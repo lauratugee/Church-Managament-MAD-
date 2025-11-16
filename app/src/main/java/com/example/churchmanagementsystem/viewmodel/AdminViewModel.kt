@@ -28,7 +28,9 @@ class AdminViewModel (private val adminRepository: AdminRepository): ViewModel()
     fun approveMember(userId: Int) {
         viewModelScope.launch {
             _approvalState.value = DataState.Loading
-            _approvalState.value = adminRepository.approveMember(userId)
+            val result = adminRepository.approveMember(userId)
+
+            _approvalState.value = result
 
             if (_approvalState.value is DataState.Success) {
                 fetchPendingMembers()

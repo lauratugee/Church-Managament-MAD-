@@ -19,14 +19,23 @@ import androidx.navigation.NavController
 import com.example.churchmanagementsystem.models.User
 import com.example.churchmanagementsystem.viewmodel.AdminViewModel
 import com.example.churchmanagementsystem.util.DataState
+import com.example.churchmanagementsystem.api.RetrofitInstance
+import com.example.churchmanagementsystem.repository.AdminRepository
+import com.example.churchmanagementsystem.viewmodel.AdminViewModelFactory
+
 
 
 @Composable
 fun ApproveMemberScreen(navController: NavController) {
-    val adminViewModel: AdminViewModel = viewModel()
+    val apiService = RetrofitInstance.api
+    val adminRepository = AdminRepository(apiService)
+    val factory= AdminViewModelFactory(adminRepository)
+    val adminViewModel: AdminViewModel = viewModel(factory = factory)
+
     val pendingMembers by adminViewModel.pendingMembers.collectAsState()
     val approvalState by adminViewModel.approvalState.collectAsState()
     val context = LocalContext.current
+
 
     LaunchedEffect(approvalState) {
         when (val state = approvalState) {
