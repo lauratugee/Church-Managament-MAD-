@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GroupDao {
-    @Insert(OnConflict=OnConflictStrategy.REPLACE)
+    @Insert(onConflict=OnConflictStrategy.REPLACE)
     suspend fun insertGroup(group: Group)
 
     @Query("SELECT * FROM groups")
