@@ -8,10 +8,25 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.platform.LocalContext
+import com.example.churchmanagementsystem.ChurchManagementApplication
+import com.example.churchmanagementsystem.models.MassSchedule
+import com.example.churchmanagementsystem.viewmodel.AdminViewModel
+import com.example.churchmanagementsystem.viewmodel.AdminViewModelFactory
+
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddMassScheduleScreen(navController: NavController) {
+    val context = LocalContext.current
+    val application = context.applicationContext as ChurchManagementApplication
+    val adminViewModel: AdminViewModel = viewModel(
+        factory = AdminViewModelFactory(application.adminRepository)
+    )
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -61,8 +76,22 @@ fun AddMassScheduleScreen(navController: NavController) {
 
             Button(
                 onClick = {
+                    val newSchedule = MassSchedule(
+                        id=0,
+                        dayOfWeek = dayOfWeek,
+                        startTime = startTime,
+                        language = language
+                    )
 
+                    adminViewModel.addMassSchedule(newSchedule) { isSuccess ->
+                        if (isSuccess) {
+                            navController.navigateUp()
+                        } else {
+
+                        }
+                    }
                 },
+
                 modifier = Modifier.fillMaxWidth()
             ) {
 

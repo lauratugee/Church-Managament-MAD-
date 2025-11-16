@@ -32,5 +32,8 @@ interface ApiService {
     @DELETE("mass-schedules/{scheduleId}")
     suspend fun deleteMassSchedule(@Path("scheduleId") scheduleId: Long): Response<Unit>
 
+    @POST("mass-schedules")
+    suspend fun addMassSchedule(@Body schedule: MassSchedule): Response<Unit>
+
 
 }
