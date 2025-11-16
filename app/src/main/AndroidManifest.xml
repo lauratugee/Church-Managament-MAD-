@@ -16,6 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ChurchManagementSystem"
+        android:networkSecurityConfig="xmlpull/network_security_config"
         tools:targetApi="31">
 
         <activity
