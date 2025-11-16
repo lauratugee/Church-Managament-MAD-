@@ -1,6 +1,7 @@
 package com.example.churchmanagementsystem.repository
 
 import com.example.churchmanagementsystem.api.ApiService
+import com.example.churchmanagementsystem.models.MassSchedule
 import com.example.churchmanagementsystem.models.User
 import com.example.churchmanagementsystem.util.DataState
 
@@ -43,5 +44,21 @@ class AdminRepository (private val apiService: ApiService){
             DataState.Error(e.message ?: "Unknown error")
             }
         }
+    suspend fun getMassSchedules(): DataState<List<MassSchedule>> {
+        return try{
+            val response=apiService.getMassSchedules()
+            if (response.isSuccessful && response.body()!=null) {
+                DataState.Success(response.body()!!)
+            } else{
+                DataState.Error(response.message() ?: "Failed to fetch mass schedules")
+            }
+        } catch (e: Exception) {
+            DataState.Error(e.message ?: "Unknown error")
+            }
+
+
+        }
     }
+
+
 

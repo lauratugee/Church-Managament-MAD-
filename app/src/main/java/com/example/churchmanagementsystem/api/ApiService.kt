@@ -6,6 +6,7 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.http.GET
 import retrofit2.http.Path
+import com.example.churchmanagementsystem.models.MassSchedule
 
 
 interface ApiService {
@@ -23,6 +24,9 @@ interface ApiService {
 
     @POST("decline_member/{userId}")
     suspend fun declineMember(@Path("userId") userId: Int): Response<Unit>
+
+    @GET("api/schedules")
+    suspend fun getMassSchedules(): Response<List<MassSchedule>>
 
 
 }
