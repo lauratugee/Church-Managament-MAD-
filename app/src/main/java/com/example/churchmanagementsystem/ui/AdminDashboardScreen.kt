@@ -11,9 +11,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun AdminDashboardScreen(navController: NavController){
+fun AdminDashboardScreen(navController: NavController) {
     Column(
-        modifier=Modifier
+        modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.Center,
@@ -22,14 +22,14 @@ fun AdminDashboardScreen(navController: NavController){
         Text("Admin Dashboard", style = MaterialTheme.typography.headlineLarge)
         Spacer(modifier = Modifier.height(32.dp))
 
-        AdminNavButton(text= "Create Group"){
+        AdminNavButton(text = "Create Group") {
             navController.navigate("create_group")
         }
-        AdminNavButton(teext="Update mass schedule"){
+        AdminNavButton(text = "Update mass schedule") {
             navController.navigate("update_mass_schedule")
 
         }
-        AdminNavButton(text="Approve and update members"){
+        AdminNavButton(text = "Approve and update members") {
             navController.navigate("approve_members")
         }
         Spacer(modifier = Modifier.weight(1f))
@@ -40,10 +40,11 @@ fun AdminDashboardScreen(navController: NavController){
                     inclusive = true
                 }
             }
-            }){
+        }) {
             Text("Logout")
         }
-        }
+    }
+}
 
 
 @Composable
@@ -57,5 +58,5 @@ fun AdminNavButton(text: String, onClick: () -> Unit) {
         Text(text)
     }
 }
-}
+
 

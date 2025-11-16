@@ -19,6 +19,7 @@ import com.example.churchmanagementsystem.ui.HomeScreen
 import com.example.churchmanagementsystem.ui.LoginScreen
 import com.example.churchmanagementsystem.ui.RegistrationScreen
 import com.example.churchmanagementsystem.ui.AdminDashboardScreen
+import com.example.churchmanagementsystem.ui.group.GroupScreen
 import com.example.churchmanagementsystem.ui.theme.ChurchManagementSystemTheme
 import com.example.churchmanagementsystem.viewmodel.AuthViewModel
 class MainActivity : ComponentActivity() {
@@ -71,7 +72,7 @@ fun AppNavigation () {
             AdminDashboardScreen(navController)
         }
         composable("create_group") {
-            CreateGroupScreen(navController)
+            GroupScreen()
         }
         composable("update_mass_schedule") {
             UpdateMassScheduleScreen(navController)
@@ -85,12 +86,6 @@ fun AppNavigation () {
     }
 }
 
-@Composable
-fun CreateGroupScreen(navController: NavController) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text("Create Group Screen")
-    }
-}
 
 @Composable
 fun UpdateMassScheduleScreen(navController: NavController) {
