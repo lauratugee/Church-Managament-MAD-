@@ -1,0 +1,63 @@
+package com.example.churchmanagementsystem.viewmodel
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.churchmanagementsystem.models.User
+import com.example.churchmanagementsystem.repository.AdminRepository
+import com.example.churchmanagementsystem.util.DataState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+
+class AdminViewModel (private val adminRepository: AdminRepository): ViewModel() {
+    private val _pendingMembers = MutableStateFlow<DataState<List<User>>>(DataState.Idle)
+    val pendingMembers = _pendingMembers.asStateFlow()
+
+    private val _approvalState = MutableStateFlow<DataState<Unit>>(DataState.Idle)
+    val approvalState = _approvalState.asStateFlow()
+
+    init {
+        fetchPendingMembers()
+    }
+    fun fetchPendingMembers() {
+        viewModelScope.launch {
+            _pendingMembers.value = DataState.Loading
+            _pendingMembers.value = adminRepository.getPendingMembers()
+        }
+    }
+    fun approveMember(userId: Int) {
+        viewModelScope.launch {
+            _approvalState.value = DataState.Loading
+            _approvalState.value = adminRepository.approveMember(userId)
+
+            if (_approvalState.value is DataState.Success) {
+                fetchPendingMembers()
+            }
+
+        }
+    }
+    fun declineMember(userId: Int) {
+        viewModelScope.launch {
+            _approvalState.value = DataState.Loading
+            val result = adminRepository.declineMember(userId)
+            _approvalState.value = result
+
+            if(_approvalState.value is DataState.Success) {
+                fetchPendingMembers()
+            }
+        }
+    }
+    fun resetApprovalState() {
+        _approvalState.value = DataState.Idle
+    }
+}
+
+
+
+
+
+
+
+
+
+
