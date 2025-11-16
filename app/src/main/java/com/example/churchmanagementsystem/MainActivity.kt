@@ -51,7 +51,11 @@ fun AppNavigation () {
         }
         composable("register") {
             RegistrationScreen(
-                navController = navController
+                navController = navController,
+                onNavigateToLogin = { navController.navigate("login") {
+                    popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                }
+                }
             )
 
 

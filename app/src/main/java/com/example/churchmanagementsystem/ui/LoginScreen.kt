@@ -14,6 +14,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.churchmanagementsystem.viewmodel.AuthViewModel
+import com.example.churchmanagementsystem.util.DataState
+
 
 @Composable
 fun LoginScreen(
@@ -25,30 +27,30 @@ fun LoginScreen(
     val authViewModel: AuthViewModel = viewModel()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val loginState by authViewModel.loginState.collectAsState()
+    val authState by authViewModel.authState.collectAsState()
     val context= LocalContext.current
 
-    LaunchedEffect(loginState) {
-        when (val state=loginState){
-            is AuthViewModel.DataState.Success -> {
-                Toast.makeText(context, "Login successful!", Toast.LENGTH_SHORT).show()
-                val user = state.data
-                val destination = when {
-                    user.role == "admin" -> "admin_dashboard"
-                    user.role == "treasurer" -> "treasurer_dashboard"
-                    else -> "home/${user.email}"
-                }
+    LaunchedEffect(authState) {
+
+        when (val state=authState){
+            is DataState.Success -> {
+                if(state.data.email.isNotBlank()){
+                    Toast.makeText(context, "Login successful!", Toast.LENGTH_SHORT).show()
+                    val user = state.data
+                    val destination = "home/${user.email}"
+
+
                 navController.navigate(destination) {
                     popUpTo(navController.graph.startDestinationId) {
                         inclusive = true
                     }
                 }
-                authViewModel.logout()
+                authViewModel.resetAuthState()
                 }
-
-            is AuthViewModel.DataState.Error -> {
+            }
+            is DataState.Error -> {
                 Toast.makeText(context, "Login failed: ${state.message}", Toast.LENGTH_SHORT).show()
-                authViewModel.logout()
+                authViewModel.resetAuthState()
             }
             else -> {}
         }
@@ -57,65 +59,66 @@ fun LoginScreen(
 
 
     Box(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
 
-        ) {
-            Text("Login", style = MaterialTheme.typography.headlineMedium)
-            Spacer(modifier = Modifier.height(32.dp))
+    ) {
+        Text("Login", style = MaterialTheme.typography.headlineMedium)
+        Spacer(modifier = Modifier.height(32.dp))
 
-            val isUIEnabled=loginState !is AuthViewModel.DataState.Loading
+        val isUIEnabled = authState !is DataState.Loading
 
+        //Email
+        OutlinedTextField(
+            value = email,
+            onValueChange = { email = it },
+            label = { Text("Email") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            modifier = Modifier.fillMaxWidth(),
+            enabled= isUIEnabled
+        )
+        Spacer(modifier = Modifier.height(8.dp))
 
-            //Email
-            OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
-                label = { Text("Email") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+        //Password
+        OutlinedTextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text("Password") },
+            visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth(),
+            enabled= isUIEnabled
+        )
+        Spacer(modifier = Modifier.height(32.dp))
 
-            //Password
-            OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text("Password") },
-                visualTransformation = PasswordVisualTransformation(),
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(32.dp))
-
-            //Login
-            Button(
-                onClick = {
-                    authViewModel.login(email, password)
-                },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = isUIEnabled && email.isNotEmpty() && password.isNotEmpty()
-            )
-            {
-                Text("Login")
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-
-            //Register
-            TextButton(onClick = onNavigateToRegister, enabled=isUIEnabled) {
-                Text("Don't have an account? Register here")
-            }
-            TextButton(
-                onClick = {},
-               enabled=isUIEnabled
-            ) {
-                Text("Forgot password?")
-            }
+        //Login
+        Button(
+            onClick = {
+                authViewModel.login(email, password)
+            },
+            modifier = Modifier.fillMaxWidth(),
+            enabled = isUIEnabled && email.isNotEmpty() && password.isNotEmpty()
+        )
+        {
+            Text("Login")
         }
-        if (loginState is AuthViewModel.DataState.Loading)
-            CircularProgressIndicator(modifier=Modifier.align(Alignment.Center))
+        Spacer(modifier = Modifier.height(16.dp))
+
+        //Register
+        TextButton(onClick = onNavigateToRegister, enabled = isUIEnabled) {
+            Text("Don't have an account? Register here")
+        }
+        TextButton(
+            onClick = {},
+            enabled = isUIEnabled
+        ) {
+            Text("Forgot password?")
+        }
     }
+    if (authState is DataState.Loading)
+        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+}
     }

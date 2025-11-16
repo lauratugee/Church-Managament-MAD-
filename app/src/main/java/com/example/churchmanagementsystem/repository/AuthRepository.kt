@@ -3,15 +3,13 @@ package com.example.churchmanagementsystem.repository
 
 import com.example.churchmanagementsystem.api.ApiService
 import com.example.churchmanagementsystem.models.User
-import com.example.churchmanagementsystem.viewModels.AuthViewModel
+import com.example.churchmanagementsystem.util.DataState
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 
 class AuthRepository(private val apiService: ApiService){
-
-    private typealias DataState<T> = AuthViewModel.DataState<T>
 
 
     suspend fun register(
@@ -20,7 +18,6 @@ class AuthRepository(private val apiService: ApiService){
         email: String,
         dateOfBirth: String,
         phoneNumber: String,
-        dateJoined: String,
         gender: String,
         maritalStatus: String
     ): DataState<User> {
@@ -41,7 +38,7 @@ class AuthRepository(private val apiService: ApiService){
             if (response.isSuccessful && response.body()!=null){
                 DataState.Success(response.body()!!)
             } else{
-                DataState.Error(response.message())
+                DataState.Error(response.message()?:"Server error")
 
             }
         } catch (e: Exception){
@@ -57,10 +54,11 @@ class AuthRepository(private val apiService: ApiService){
             if (response.isSuccessful && response.body() != null) {
                 DataState.Success(response.body()!!)
             } else{
+                val errorMsg = response.errorBody()?.string() ?: "Unknown error"
                 DataState.Error("Error: ${response.code()}-${response.message()}")
             }
         } catch (e: Exception) {
-            DataState.Error("Error: ${e.message}")
+            DataState.Error(e.message ?: "Unknown error")
             }
 
     }
