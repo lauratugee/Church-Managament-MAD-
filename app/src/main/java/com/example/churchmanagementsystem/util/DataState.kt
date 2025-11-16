@@ -1,7 +1,7 @@
 package com.example.churchmanagementsystem.util
 
-sealed class DataState {
-    data class Success<T>(val data: T) : DataState()
+sealed class DataState<out T> {
+    data class Success<out T>(val data: T) : DataState<T>()
     data class Error(val message: String) : DataState<Nothing>()
     object Loading : DataState<Nothing>()
     object Idle : DataState<Nothing>()
