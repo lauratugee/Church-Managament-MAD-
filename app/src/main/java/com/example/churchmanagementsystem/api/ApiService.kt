@@ -16,7 +16,7 @@ import com.example.churchmanagementsystem.models.Fundraiser
 
 interface ApiService {
     @POST("register")
-    suspend fun registerUser(@Body body: Map<String, @JvmSuppressWildcards Any>): Response<User>
+    suspend fun registerUser(@Body user: User): Response<User>
 
     @POST("login")
     suspend fun loginUser(@Body credentials: Map<String, String>): Response<User>

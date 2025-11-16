@@ -32,29 +32,33 @@ fun LoginScreen(
 
     LaunchedEffect(authState) {
 
-        when (val state=authState){
+        when (val state = authState) {
             is DataState.Success -> {
-                if(state.data.email.isNotBlank()){
+                if (state.data.email.isNotBlank()) {
                     Toast.makeText(context, "Login successful!", Toast.LENGTH_SHORT).show()
-                    val user = state.data
-                    val destination = "home/${user.email}"
+                    val userEmail = state.data.email
+                    val destination = "home/${userEmail}"
 
 
-                navController.navigate(destination) {
-                    popUpTo(navController.graph.startDestinationId) {
-                        inclusive = true
+                    navController.navigate(destination) {
+                        popUpTo(navController.graph.startDestinationId) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
                     }
-                }
-                authViewModel.resetAuthState()
+                    authViewModel.resetAuthState()
                 }
             }
+
             is DataState.Error -> {
                 Toast.makeText(context, "Login failed: ${state.message}", Toast.LENGTH_SHORT).show()
                 authViewModel.resetAuthState()
             }
+
             else -> {}
         }
     }
+
 
 
 

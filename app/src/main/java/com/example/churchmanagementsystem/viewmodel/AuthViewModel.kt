@@ -35,20 +35,24 @@ class AuthViewModel: ViewModel() {
         dateOfBirth: String,
         phoneNumber: String,
         gender: String,
-        maritalStatus: String
+        maritalStatus: String,
+        password: String
     ){
         viewModelScope.launch {
             _authState.value=DataState.Loading
 
-            val result=authRepository.register(
+            val user=User(
+                id=0,
                 firstName=firstName,
                 lastName=lastName,
                 email=email,
                 dateOfBirth=dateOfBirth,
                 phoneNumber=phoneNumber,
                 gender=gender,
-                maritalStatus=maritalStatus
+                maritalStatus=maritalStatus,
+                password=password
             )
+            val result=authRepository.register(user)
             _authState.value=result
 
 

@@ -211,7 +211,8 @@ fun RegistrationScreen(navController:NavController, onNavigateToLogin:() -> Unit
                             dateOfBirth = dateOfBirth,
                             phoneNumber = phoneNumber,
                             gender = gender,
-                            maritalStatus = maritalStatus
+                            maritalStatus = maritalStatus,
+                            password = password
                         )
 
                     },

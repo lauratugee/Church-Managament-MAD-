@@ -12,39 +12,21 @@ import java.util.Locale
 class AuthRepository(private val apiService: ApiService){
 
 
-    suspend fun register(
-        firstName: String,
-        lastName: String,
-        email: String,
-        dateOfBirth: String,
-        phoneNumber: String,
-        gender: String,
-        maritalStatus: String
-    ): DataState<User> {
-        return try{
-            val dateJoined=SimpleDateFormat("dd-MM-yyyy",Locale.getDefault()).format(Date())
-
-            val userDetails=mapOf(
-                "firstName" to firstName,
-                "lastName" to lastName,
-                "email" to email,
-                "dateOfBirth" to dateOfBirth,
-                "phoneNumber" to phoneNumber,
-                "dateJoined" to dateJoined,
-                "gender" to gender,
-                "maritalStatus" to maritalStatus
-            )
-            val response=apiService.registerUser(userDetails)
-            if (response.isSuccessful && response.body()!=null){
+    suspend fun register(user: User): DataState<User> {
+        return try {
+            val response = apiService.registerUser(user)
+            if (response.isSuccessful && response.body() != null) {
                 DataState.Success(response.body()!!)
-            } else{
-                DataState.Error(response.message()?:"Server error")
-
+            } else {
+                val errorMsg = response.errorBody()?.string() ?: "Unknown error"
+                DataState.Error(errorMsg)
             }
-        } catch (e: Exception){
+        } catch (e: Exception) {
             DataState.Error(e.message ?: "Unknown error")
         }
     }
+
+    suspend fun register()
 
     suspend fun login(email: String, password: String): DataState<User> {
         return try {
