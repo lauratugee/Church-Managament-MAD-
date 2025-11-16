@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.churchmanagementsystem.ChurchManagementApplication
@@ -32,7 +33,7 @@ fun UpdateMassScheduleScreen(navController: NavController){
     val adminViewModel: AdminViewModel = viewModel(
         factory = AdminViewModelFactory(application.adminRepository)
     )
-    val schedules by adminViewModel.massSchedules.collectAsState()
+    val schedules by adminViewModel.massSchedules.collectAsState(initial=DataState.Idle)
 
     var showDialog by remember { mutableStateOf(false) }
     var selectedSchedule by remember { mutableStateOf<MassSchedule?>(null) }

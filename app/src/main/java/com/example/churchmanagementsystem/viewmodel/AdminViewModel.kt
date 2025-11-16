@@ -17,8 +17,14 @@ class AdminViewModel (private val adminRepository: AdminRepository): ViewModel()
     private val _approvalState = MutableStateFlow<DataState<Unit>>(DataState.Idle)
     val approvalState = _approvalState.asStateFlow()
 
+    private val _massSchedules = MutableStateFlow<DataState<List<MassSchedule>>>(DataState.Idle)
+    val massSchedules = _massSchedules.asStateFlow()
+
+
+
     init {
         fetchPendingMembers()
+        getMassSchedules()
     }
 
     fun fetchPendingMembers() {
@@ -82,10 +88,9 @@ class AdminViewModel (private val adminRepository: AdminRepository): ViewModel()
             val result = adminRepository.addMassSchedule(massSchedule)
             if (result.isSuccess) {
                 getMassSchedules()
-                onResult(true)
             } else {
                 println("Error adding mass schedule: ${result.exceptionOrNull()?.message}")
-                onResult(false)
+
             }
 
         }
