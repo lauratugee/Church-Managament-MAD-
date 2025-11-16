@@ -25,16 +25,52 @@ fun AddMassScheduleScreen(navController: NavController) {
             )
         }
 
-    ){ innerPadding ->
-        Box(
+    ) { innerPadding ->
+        var dayOfWeek by remember { mutableStateOf("") }
+        var startTime by remember { mutableStateOf("") }
+        var language by remember { mutableStateOf("") }
+
+
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp)
-        ){
-            Text("Form")
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+
+        ) {
+            OutlinedTextField(
+                value = dayOfWeek,
+                onValueChange = { dayOfWeek = it },
+                label = { Text("Day of the week") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            OutlinedTextField(
+                value = startTime,
+                onValueChange = { startTime = it },
+                label = { Text("Start time") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            OutlinedTextField(
+                value = language,
+                onValueChange = { language = it },
+                label = { Text("Language") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Button(
+                onClick = {
+
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+
+
+                Text("Save schedule")
+            }
         }
-        }
+    }
 }
 
 
