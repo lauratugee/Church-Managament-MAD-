@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.churchmanagementsystem.db.GroupDao
 import com.example.churchmanagementsystem.models.Group
 import com.example.churchmanagementsystem.models.MassSchedule
 

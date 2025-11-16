@@ -29,11 +29,13 @@ fun GroupScreen() {
     val application=context.applicationContext as ChurchManagementApplication
 
     val groupViewModel: GroupViewModel = viewModel(
-        factory = GroupViewModelFactory(application.repository)
+        factory = GroupViewModelFactory(application.groupRepository)
     )
     val groups by groupViewModel.groups.collectAsState()
 
     var groupName by remember { mutableStateOf("") }
+    var groupDescription by remember { mutableStateOf("") }
+
 
     Column(modifier = Modifier.padding(16.dp)) {
         Text(text="Group list",style=androidx.compose.material3.MaterialTheme.typography.bodyMedium)
@@ -50,10 +52,22 @@ fun GroupScreen() {
                 label = { Text("Group name")},
                 modifier = Modifier.weight(1f)
             )
+            OutlinedTextField(
+                value = groupDescription,
+                onValueChange = { groupDescription = it },
+                label = { Text("Group description")},
+                modifier = Modifier.weight(1f)
+            )
+
             Button(
                 onClick = {
-                    groupViewModel.addGroup(groupName)
-                    groupName = ""
+                    if (groupName.isNotBlank() && groupDescription.isNotBlank()) {
+                        groupViewModel.addGroup(groupName, groupDescription)
+                        groupName = ""
+                        groupDescription = ""
+                    }
+
+
                 },
                 modifier = Modifier.padding(start = 8.dp)
             ) {

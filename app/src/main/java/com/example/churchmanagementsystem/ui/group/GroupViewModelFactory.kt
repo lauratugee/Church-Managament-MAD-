@@ -2,7 +2,7 @@ package com.example.churchmanagementsystem.ui.group
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.churchmanagementsystem.data.GroupRepository
+import com.example.churchmanagementsystem.repository.GroupRepository
 
 
 class GroupViewModelFactory (private val groupRepository: GroupRepository): ViewModelProvider.Factory{

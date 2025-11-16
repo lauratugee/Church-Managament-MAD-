@@ -1,4 +1,4 @@
-package com.example.churchmanagementsystem.data.local
+package com.example.churchmanagementsystem.db
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GroupDao {
-    @Insert(onConflict=OnConflictStrategy.REPLACE)
+    @Insert(onConflict= OnConflictStrategy.Companion.IGNORE)
     suspend fun insertGroup(group: Group)
 
-    @Query("SELECT * FROM groups")
+    @Query("SELECT * FROM 'groups' ORDER BY name ASC")
         fun getAllGroups(): Flow<List<Group>>
 }
