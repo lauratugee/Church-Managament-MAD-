@@ -11,6 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.churchmanagementsystem.ChurchManagementApplication
@@ -81,12 +83,23 @@ fun UpdateMassScheduleScreen(navController: NavController){
         topBar={
                 TopAppBar(
                     title = { Text("Update Mass Schedule") },
-                    navigationIcon={
+                    navigationIcon= {
                         IconButton(onClick = { navController.navigateUp() }) {
                             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                         }
                     }
                 )
+
+               },
+                    floatingActionButton = {
+                        FloatingActionButton(
+                            onClick = {
+                                navController.navigate("add_mass_schedule")
+                            }
+                        ) {
+                            Icon(Icons.Default.Add, contentDescription = "Add Mass Schedule")
+                    }
+
         }
 
     ){ innerPadding ->
@@ -163,24 +176,22 @@ fun MassScheduleCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
+                modifier = Modifier.weight(1f)) {
                 Text(
                     text = "Day: ${schedule.dayOfWeek} at ${schedule.startTime}",
                     style = MaterialTheme.typography.titleMedium
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Description: ${schedule.language}",
+                    text = "Language: ${schedule.language}",
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
             IconButton(onClick = onDeleteClicked) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete"
+                    contentDescription = "Delete",
+                    tint = MaterialTheme.colorScheme.error
                 )
             }
 
