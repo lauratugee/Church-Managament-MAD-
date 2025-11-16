@@ -19,8 +19,12 @@ import com.example.churchmanagementsystem.ui.HomeScreen
 import com.example.churchmanagementsystem.ui.LoginScreen
 import com.example.churchmanagementsystem.ui.RegistrationScreen
 import com.example.churchmanagementsystem.ui.AdminDashboardScreen
+import com.example.churchmanagementsystem.ui.treasurer.TreasurerDashboardScreen
 import com.example.churchmanagementsystem.ui.group.GroupScreen
 import com.example.churchmanagementsystem.ui.mass_schedule.MassScheduleScreen
+import com.example.churchmanagementsystem.ui.admin.UpdateMassScheduleScreen
+import com.example.churchmanagementsystem.ui.admin.ApproveMemberScreen
+import com.example.churchmanagementsystem.ui.admin.AddMassScheduleScreen
 import com.example.churchmanagementsystem.ui.theme.ChurchManagementSystemTheme
 import com.example.churchmanagementsystem.viewmodel.AuthViewModel
 class MainActivity : ComponentActivity() {
